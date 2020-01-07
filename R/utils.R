@@ -472,6 +472,7 @@ revlog_trans <- function(base = exp(1)) {
   scales::trans_new("revlog1p", trans, inv, domain = c(0, Inf))
 }
 
+#' @export
 volcano_plot <-
   function(stats_table,
            threshold = 0.05,
@@ -676,6 +677,7 @@ mean_test <-
     return (stats_table)
   }
 
+#' @export
 stats_2groups <-
   function(case,
            control,
