@@ -2,4 +2,5 @@
 
 export(combine_QI_TF)
 export(load_data)
+export(numeric_dataframe)
 export(theme_nature)

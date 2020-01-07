@@ -22,6 +22,7 @@ for (lib in c(
 }
 
 # This script contains functions to manipulate metbolite profiling data
+#' @export
 numeric_dataframe <- function(input) {
   input[, c(1:ncol(input))] <-
     sapply(sapply(input[, c(1:ncol(input))], as.character), as.numeric)
