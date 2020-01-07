@@ -1,13 +1,15 @@
-Package:omicsPattern
+Package: omicsPattern
 Title: Statistical analyses and visualization of omics data
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Ali",
            family = "Rahnavard",
            role = c("aut", "cre"),
-           email = "gholamali.rahnavard@gmail.com")
-Description: What the package does (one paragraph).
+           email = "gholamali.rahnavard@gmail.com",
+           comment = c(ORCID = "0000-0002-9710-0248"))
+Description: Provides statitical tests, visulization, and manipulation of omics data.
 License: MIT License
 Encoding: UTF-8
 LazyData: true
 Collate: fit.R utils.R theme_nature.R	plsda.R mol_simailrity.R pcl_utils.r	qc.R	netome_process.R
+RoxygenNote: 7.0.2
