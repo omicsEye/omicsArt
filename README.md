@@ -7,7 +7,7 @@ omicsPattern is tool for quality control, statistical analysis, and visualizatio
 **Citation:**
 
 
-**For installation and a quick demo, read the [omicsPattern User Manual](https://github.com/broadinstitute/omicsPattern/wiki).**
+**For installation and a quick demo, read the [omicsPattern User Manual](https://github.com/omicsEye/omicsPattern/wiki).**
 
 
 ## Installation ##
@@ -21,7 +21,7 @@ omicsPattern is tool for quality control, statistical analysis, and visualizatio
     * ``> devtools::install_github('broadinstitute/omicsPattern', force = TRUE) ``
 
 ### Input files (netome format) ###
-[omicsPattern demo](https://github.com/broadinstitute/m2path/tree/master/demo)
+[omicsPattern demo](https://github.com/omicsEye/omicsPattern/tree/master/demo)
 
 Comming soon
 
