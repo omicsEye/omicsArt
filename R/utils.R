@@ -745,6 +745,7 @@ stats_2groups <-
     return (stats_table)
   }
 
+#' @export
 diff_bar_plot <-
   function(stats_table,
            threshold = 0.05,
@@ -821,6 +822,7 @@ check_anotation <- function(study, ref_db = NA) {
   return (unkcharterized_hmdb)
 }
 
+#' @export
 variance.test <-
   function(data, metadata, meta , method = 'levene') {
     # find common samples (rows) between data and metdata if the are not the same
@@ -917,6 +919,7 @@ regrese_out <- function(features,
   return (as.data.frame(t(residuals_df)))
 }
 
+#' @export
 merge_cvs <- function(input_dir_path, outputfile) {
   # Download from http://smpdb.ca/downloads
   # extract the zip file to smpdb_metabolites
@@ -981,7 +984,7 @@ filter_by_prevelance <-
       return (as.data.frame(step1.dat))
   }
 
-
+#' @export
 filter_by_variance <- function(data, top = .95, axis = 1) {
   if (axis == 2) {
     data <- as.data.frame(t(data))
@@ -995,7 +998,7 @@ filter_by_variance <- function(data, top = .95, axis = 1) {
     return (as.data.frame(step2.dat))
 }
 
-
+#' @export
 ordplots <-
   function(data,
            metadata,
@@ -1077,6 +1080,7 @@ ordplots <-
     return(ord_plots)
   }
 
+#' @export
 check.numeric <- function(N) {
   return(
     grepl(
@@ -1085,6 +1089,8 @@ check.numeric <- function(N) {
     )
   )
 }
+
+#' @export
 convert_maaslin_output2matrix <-
   function(df,
            simlarity_threshold = 0.0005,
@@ -1159,6 +1165,8 @@ convert_maaslin_output2matrix <-
 
     return (as.data.frame(b))
   }
+
+#' @export
 combine_maaslin_heatmap <- function() {
   #library(pheatmap)
   output_file = "pheatmap.pdf"
@@ -1333,6 +1341,7 @@ combine_maaslin_heatmap <- function() {
   return (plot_result)
 }
 
+#' @export
 combine2df <- function(df1, df2) {
   all_rows <- dplyr::union(rownames(df1), rownames(df2))
   df1 <- df1[all_rows,]
