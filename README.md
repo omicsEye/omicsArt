@@ -20,7 +20,7 @@ omicsPattern is tool for quality control, statistical analysis, and visualizatio
     * ``install.packages(c('dplyr','pbapply', 'lme4', 'lmerTest', 'car', 'cplm', 'pscl', 'logging', 'ggrepel', 'gridExtra', 'future', 'cowplot'), repos='http://cran.r-project.org')``
     * ``> devtools::install_github('omicsEye/omicsPattern', force = TRUE) ``
 
-### Input files (netome format) ###
+### Input files (omics format) ###
 [omicsPattern demo](https://github.com/omicsEye/omicsPattern/tree/master/demo)
 
 Comming soon
@@ -34,7 +34,7 @@ library(omicsPattern)
 ## R script neteome_process.R to use and call the common functions ##
 
 ```
-# load netome format data
+# load omics format data
 loaded_data <- omicsPattern::load_data()
 # check the wiki for detailed parameters
 
