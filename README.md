@@ -18,7 +18,7 @@ omicsPattern is tool for quality control, statistical analysis, and visualizatio
     * ``>library(devtools)``
 2. Install omicsPattern (and also all dependencies from CRAN): 
     * ``install.packages(c('dplyr','pbapply', 'lme4', 'lmerTest', 'car', 'cplm', 'pscl', 'logging', 'ggrepel', 'gridExtra', 'future', 'cowplot'), repos='http://cran.r-project.org')``
-    * ``> devtools::install_github('broadinstitute/omicsPattern', force = TRUE) ``
+    * ``> devtools::install_github('omicsEye/omicsPattern', force = TRUE) ``
 
 ### Input files (netome format) ###
 [omicsPattern demo](https://github.com/omicsEye/omicsPattern/tree/master/demo)

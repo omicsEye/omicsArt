@@ -562,7 +562,7 @@ pcl.compmatrix.s <- function(dat, fun, symmetric=TRUE) {
 
 # -----------------------------------------------------------------------------
 #  Heatmap visualization function
-
+#' @export
 pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
                         zerocolor = NA, sqrtspace = F, gamma = 2, as = F,
                         ev = 10/(dat$ns*dat$nf), # Extreme values
@@ -586,7 +586,7 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
 
     def.params <- list()
     def.params$show_colnames <- dat$ns <= 50
-    def.params$show_rownames <- dat$nf <= 1000#40
+    def.params$show_rownames <- dat$nf <= 40#40
     def.params$clustering_distance_rows <- if(divergent0) {"euclidean"} else {"bray/curtis"}
     def.params$clustering_distance_cols <- def.params$clustering_distance_rows
     def.params$cluster_rows <- dat$nf > 1
@@ -961,6 +961,7 @@ pcl.tsne <- function(dat, D = NA, as = F, asinsqrt = as,index = "bray/curtis", k
     return (ord)
 }
 
+#' @export
 pcl.ordplot <- function(dat, ord, pcos = 2, pointoutline = T,
         colour = NA, colour_title = NA, colour_names = NA, colour_override = NA,
         shape = NA,  shape_title = NA,  shape_names = NA,  shape_override = NA,
