@@ -1008,7 +1008,7 @@ pcl.ordplot <- function(dat, ord, pcos = 2, pointoutline = T,
         metamatch <- metamatch[!is.na(metamatch)]
     }
     if (is.na(size_abs)) {
-        gptopt$size <- min(6, 50 / sqrt(length(metamatch)))
+        gptopt$size <- min(5, 50 / sqrt(length(metamatch)))
     } else {
         gptopt$size <- size_abs
     }
