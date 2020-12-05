@@ -1,5 +1,5 @@
-Package: omicsPattern
-Title: omicsPattern
+Package: omicsArt
+Title: omicsArt
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Ali",
