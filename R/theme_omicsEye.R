@@ -2,7 +2,7 @@
 #library(ggplot2)
 
 #' @export
-theme_nature <- function() list(
+theme_omicsEye <- function() list(
     cowplot::theme_cowplot(),
     ggplot2::theme(
         text               = ggplot2::element_text(size = 6),

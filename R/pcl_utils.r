@@ -957,7 +957,11 @@ pcl.tsne <- function(dat, D = NA, as = F, asinsqrt = as,index = "bray/curtis", k
     set.seed(seed)
     tsn <- tsne(D, k=k)
     ord <- list(points = tsn, ordnames = sprintf("t-SNE %d", 1:k))
-    rownames(ord$points) <- rownames(dat$x)
+    if (length(D) == 1 && is.na(D)) {
+        rownames(ord$points) <- rownames(dat$x)
+    }else{
+        rownames(ord$points) <- rownames(D)
+    }
     return (ord)
 }
 
@@ -1008,7 +1012,7 @@ pcl.ordplot <- function(dat, ord, pcos = 2, pointoutline = T,
         metamatch <- metamatch[!is.na(metamatch)]
     }
     if (is.na(size_abs)) {
-        gptopt$size <- min(5, 50 / sqrt(length(metamatch)))
+        gptopt$size <- min(3, 50 / sqrt(length(metamatch)))
     } else {
         gptopt$size <- size_abs
     }
@@ -1253,12 +1257,12 @@ pcl.ordplot <- function(dat, ord, pcos = 2, pointoutline = T,
         } else if (length(levels(colby)) > 9) {
             library(RColorBrewer)
             ggp <- ggp + ggscale_manual(values = colorRampPalette(
-                rev(brewer.pal(n = 7, name = "RdYlBu")))(length(levels(colby))))
+                rev(brewer.pal(n = 7, name = "Spectral")))(length(levels(colby))))
             col_guide <- guide_legend(title = colour_title,
                                     override.aes = list(size=3, shape=21))
         } else {
             # Discrete data uses the Set1 palette
-            ggp <- ggp + scale_fill_brewer(palette = "Set1")
+            ggp <- ggp + scale_fill_brewer(palette = "Spectral", direction=-1)
             col_guide <- guide_legend(title = colour_title,
                                 override.aes = list(size=3, shape=21))
         }

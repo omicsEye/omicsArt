@@ -11,5 +11,5 @@ Description: Provides statitical tests, visulization, and manipulation of omics 
 License: MIT License
 Encoding: UTF-8
 LazyData: true
-Collate: fit.R utils.R theme_nature.R	plsda.R mol_simailrity.R pcl_utils.r qc.R	netome_process.R
-RoxygenNote: 7.0.2
+Collate: fit.R utils.R theme_omicsEye.R	plsda.R mol_simailrity.R pcl_utils.r qc.R	netome_process.R
+RoxygenNote: 7.1.0

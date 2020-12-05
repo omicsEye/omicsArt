@@ -360,7 +360,7 @@ cor_within_and_between_2df <- function(df1,
       stats_table$Correlation
     )))) +
     xlab("Spearman Correlation") + ylab("Count") +
-    theme_nature() +
+    theme_omicsEye() +
     theme(legend.justification = c(1, 1),
           legend.position = c(1, 1))
   stdout <- capture.output(print(ggp), type = "message")
@@ -429,7 +429,7 @@ cor_within_and_between_2df <- function(df1,
         na.rm = T
       ) +
       ggplot2::guides(alpha = 'none') + ggplot2::labs("") +
-      ggplot2::xlab(x_label) +  ggplot2::ylab(y_label) + theme_nature() +
+      ggplot2::xlab(x_label) +  ggplot2::ylab(y_label) + theme_omicsEye() +
       guides(fill = guide_legend(title = fillby))
       ggplot2::annotate(
         geom = "text",
@@ -686,20 +686,18 @@ stats_2groups <-
     stats_table <-
       setNames(
         data.frame(matrix(
-          ncol = 8, nrow = dim(case)[2]
+          ncol = 5, nrow = dim(case)[2]
         )),
         c(
           "logFC",
-          "Carbon length",
-          "Double bond",
           "statistic",
           "P.Value",
           "adj.P.Val",
-          "B",
           "fdr"
         )
       )
     rownames(stats_table) <- colnames(case)
+    #i <- 100
     for (i in 1:dim(stats_table)[1]) {
       if (all(is.na(case[, i])) || all(is.na(control[, i]))) {
         #print(i)
@@ -709,30 +707,20 @@ stats_2groups <-
         log2(mean(case[, i], na.rm = TRUE)) - log2(mean(control[, i], na.rm = TRUE))
       tryCatch({
         if (test_type == 't.test') {
-          stats_table[i, 'P.Value'] <-
-            t.test(case[, i], control[, i], paired = paired)$p.value
-          stats_table[i, 'statistic'] <-
-            t.test(case[, i], control[, i], paired = paired)$statistic
+          temp_test_result <- NA
+          temp_test_result <- t.test(case[, i], control[, i], paired = paired)
+          stats_table[i, 'P.Value'] <-temp_test_result$p.value
+          stats_table[i, 'statistic'] <-temp_test_result$statistic
         } else{
-          stats_table[i, 'P.Value'] <-
-            wilcox.test(case[, i], control[, i], paired = paired)$p.value
-          stats_table[i, 'statistic'] <-
-            wilcox.test(case[, i], control[, i], paired = paired)$statistic
+            temp_test_result <- NA
+            temp_test_result <-wilcox.test(case[, i], control[, i], paired = paired)
+            stats_table[i, 'P.Value'] <- temp_test_result$p.value
+          stats_table[i, 'statistic'] <-temp_test_result$statistic
         }
       }, error = function(e) {
         stats_table[i, 'P.Value'] <- NA
         stats_table[i, 'statistic'] <- NA
       })
-      stats_table[i, "Carbon length"] <-
-        as.numeric(unlist(strsplit(unlist(
-          strsplit(rownames(stats_table)[i], ":")
-        )[1], "C"))[2])
-      stats_table[i, "Double bond"] <-
-        as.numeric(unlist(strsplit(unlist(
-          strsplit(rownames(stats_table)[i], ":")
-        )[2], " "))[1])
-      stats_table[i, "Family"] <-
-        gsub("^.* ", "", rownames(stats_table)[i])
     }
 
     stats_table$fdr <-
@@ -750,40 +738,58 @@ diff_bar_plot <-
   function(stats_table,
            threshold = 0.05,
            method = 'nominal',
-           orderby = 'logFC',
-           y_label = "Y label") {
-    if(is.na(method)){
-      method <- NA
-    }
-    else if (method == 'nominal') {
-      stats_table$fdr <- stats_table$P.Value
-    }
-    else if (method == 'fdr') {
+           pvalue_col = "P.Value",
+           fdr_col = "fdr",
+           orderby = 'coef',
+           y_label = "Y label",
+           x_label = 'X label') {
+    orderby <- as.factor(orderby)
+    if (method == 'nominal') {
       stats_table <-
-        stats_table[which(stats_table$fdr <= threshold),]
+        stats_table[which(stats_table[,pvalue_col] <= threshold),]
+    }else if (method == 'fdr') {
+      stats_table <-
+        stats_table[which(stats_table[,fdr_col] <= threshold),]
     }
-    if (!is.na(orderby))
+    #stats_table2 <- stats_table
+    #stats_table <- stats_table2
+    if (!is.na(orderby)){
+      stats_table <- stats_table[order(stats_table[orderby]),]
+      order_sig <- rownames(stats_table)
       stats_table <- within(stats_table,
-                            orderby <- factor(orderby,
-                                            levels=names(sort(table(orderby),
-                                                              decreasing=TRUE))))
-        #stats_table <- stats_table[order(temp_stats_table[orderby]),]
+                            feature <- factor(feature,
+                                              levels=order_sig))
+      #stats_table <- transform( stats_table,
+      #                          feature = ordered(feature, levels = names( sort(-table(feature)))))
+      #stats_table <- within(stats_table,
+      #                      feature <- factor(feature,
+      #                                        levels=names(sort(table(feature),
+      #                                                          decreasing=TRUE))))
+      #stats_table2 <- stats_table[order(stats_table[orderby]),]
+    }
     p <- ggplot(stats_table) +
       geom_bar(
         aes(
-          x = feature, #reorder(feature, get(orderby)),
-          y = logFC,
-          fill = logFC
+          x= feature, #reorder(rownames(stats_table), stats_table$logFC),
+          y = coef,
+          fill = coef
         ),
         show.legend =  F,
         stat = "identity",
         position = "identity"
       ) +
-      xlab(y_label) + ylab("logFC") +
+      #scale_alpha_manual(values=-log10(stats_table$qval),guide=F)+
+      geom_text(aes(x= feature,
+                    y = coef,
+                    label=ifelse(stats_table[fdr_col] < threshold, "*", "") ##sprintf("%s",formatC(qval, format = "e", digits = 3)
+                    ),
+                size = 2
+                )+
+      xlab(y_label) + ylab(x_label) +
       #guides(colour = guide_legend(show = FALSE) )+
-      guides(fill = guide_legend(title = "")) + theme(legend.justification =
-                                                        c(0, 0),
-                                                      legend.position = c(.3, .2)) +
+      #guides(fill = guide_legend(title = "")) + theme(legend.justification =
+       #                                                 c(0, 0),
+       #                                               legend.position = c(.3, .2)) +
       #theme(legend.position="top", legend.direction="vertical")+
       theme(plot.title = element_text(face = "bold", hjust = .9)) +
       #labs(title = "")+
@@ -793,7 +799,7 @@ diff_bar_plot <-
         high = 'darkgreen',
         space = 'Lab'
       ) +
-      theme_nature() +
+      theme_omicsEye() +
 
       #theme(text = element_text(),axis.text.x = element_text(angle = 0, hjust = 1), axis.text.y = element_text(angle = 0, hjust = 1))+
       #geom_text(aes(label=number_of_genome_ref), position=position_dodge(width=0.9), vjust=-0.25)+
