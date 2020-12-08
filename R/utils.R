@@ -1336,7 +1336,7 @@ combine_maaslin_heatmap <- function() {
     )
   dev.off()
   ggsave(
-    filename = '~/Documents/Metabolomics/Projects/MESA/associations_overview.pdf',
+    filename = 'associations_overview.pdf',
     plot = plot_result$gtable,
     width = 12,
     limitsize = FALSE,

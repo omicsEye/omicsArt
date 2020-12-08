@@ -75,7 +75,7 @@ parameters:
 
 * input: is a excel file in `format`
 
-* type: can be `known` for charterized metabolites with a name  or `all` for all measured features including known and uncharxterized metabolites
+* type: can be `known` for characterized metabolites with a name  or `all` for all measured features including known and uncharxterized metabolites
 
 * sheet: defualt is `1`, to read first tab of the excel sheet of the excel files but user can use different tab number. 
 
