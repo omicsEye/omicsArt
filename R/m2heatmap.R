@@ -1,6 +1,8 @@
 # suitable for mantel.rtest
 #by Jason Lloyd-price and Ali Rahnavard
 library(RColorBrewer)
+
+#' @export
 m2heatmap <- function(O, P, Ocil, Ociu, title, stars=F) {
 
   library(reshape2)

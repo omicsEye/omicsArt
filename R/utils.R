@@ -476,13 +476,21 @@ revlog_trans <- function(base = exp(1)) {
 volcano_plot <-
   function(stats_table,
            threshold = 0.05,
-           method = 'nominal') {
+           method = 'nominal',
+           pvalue_col = "pval",
+           fdr_col = "qval",
+           orderby = 'coef',
+           y_label = "P-Value (-log10)",
+           x_label = 'Coefficient') {
+    colnames(stats_table) <- gsub(orderby, "coef", colnames(stats_table))
+    colnames(stats_table) <- gsub(pvalue_col, "P.Value", colnames(stats_table))
+    colnames(stats_table) <- gsub(fdr_col, "fdr", colnames(stats_table))
     if (method == 'nominal')
       stats_table$fdr <- stats_table$P.Value
-    stats_table$feature[stats_table$fdr >= threshold] <- NA
+    stats_table$feature[stats_table$fdr  >= threshold] <- NA
     p <-
       ggplot(stats_table, aes(
-        x = logFC,
+        x = coef,
         y = -log10(P.Value),
         label = feature
       )) +
@@ -495,21 +503,21 @@ volcano_plot <-
                       geom = "polygon",
                       show.legend = FALSE) +
       geom_point(
-        data = subset(stats_table, fdr <= threshold & logFC > 0.0),
+        data = subset(stats_table, fdr <= threshold & coef > 0.0),
         fill = "green",
         color = 'black',
         alpha = .5,
         shape = 21,
-        size = 2,
+        size = 1,
         stroke = 0.05
       ) +
       geom_point(
-        data = subset(stats_table, fdr <= threshold & logFC < 0.0),
+        data = subset(stats_table, fdr <= threshold & coef < 0.0),
         fill = 'red',
         color = 'black',
         alpha = .5,
         shape = 21,
-        size = 2,
+        size = 1,
         stroke = 0.05
       ) +
       geom_point(
@@ -518,7 +526,7 @@ volcano_plot <-
         color = "black",
         alpha = 0.2,
         shape = 21,
-        size = 2,
+        size = 1,
         stroke = 0.05
       ) +
       geom_vline(xintercept = 0, size = 0.1) +
@@ -537,11 +545,11 @@ volcano_plot <-
       ) +
       theme_linedraw() +
       theme(panel.grid = element_blank()) +
-      xlab("Fold change (log2)") +
-      ylab("P-Value (-log10)") +
+      xlab(x_label) +
+      ylab(y_label) +
       annotate(
         "text",
-        x = min(stats_table$logFC) + .1,
+        x = min(stats_table$coef) + .1,
         y = min(-log2(stats_table$P.Value)) + .75,
         label = "Significant up",
         size = 3,
@@ -550,14 +558,14 @@ volcano_plot <-
       ) +
       annotate(
         "point",
-        x = min(stats_table$logFC),
+        x = min(stats_table$coef),
         y = min(-log2(stats_table$P.Value)) + .75,
         color = "green"
       ) +
 
       annotate(
         "text",
-        x = min(stats_table$logFC) + .1,
+        x = min(stats_table$coef) + .1,
         y = min(-log2(stats_table$P.Value)) + .5,
         label = "Significant down",
         size = 3,
@@ -566,29 +574,27 @@ volcano_plot <-
       ) +
       annotate(
         "point",
-        x = min(stats_table$logFC),
+        x = min(stats_table$coef),
         y = min(-log2(stats_table$P.Value)) + .5,
         color = "red"
       ) +
 
       annotate(
         "text",
-        x = min(stats_table$logFC),
+        x = min(stats_table$coef),
         y = min(-log2(stats_table$P.Value)) + 1.0,
         label = paste(method, " threshold: ", threshold, sep = ""),
         size = 3,
         color = "black",
         hjust = 0
       ) +
-
-
       geom_text_repel(
-        size = 2.3622,
-        force = 3,
-        fontface =  "italic",
-        box.padding = unit(.1, "lines"),
-        point.padding = unit(0.05, "lines")
-      )
+        size = 2,
+        force = 1,
+        fontface =  "italic")#,
+        #box.padding = unit(.01, "lines"),
+        #point.padding = unit(0.01, "lines")
+      #)
     return (p)
   }
 mean_test <-
@@ -738,12 +744,36 @@ diff_bar_plot <-
   function(stats_table,
            threshold = 0.05,
            method = 'nominal',
+           coef = "coef",
            pvalue_col = "P.Value",
            fdr_col = "fdr",
-           orderby = 'coef',
+           orderby = "coef",
            y_label = "Y label",
-           x_label = 'X label') {
-    orderby <- as.factor(orderby)
+           x_label = 'X label',
+           feature_col = "feature") {
+    if(coef %in% colnames(stats_table) ){
+      colnames(stats_table) <- gsub(coef, "coef", colnames(stats_table))
+      if (!is.na(orderby) && orderby == coef)
+        orderby= "coef"
+    }
+    if(pvalue_col %in% colnames(stats_table)){
+      colnames(stats_table) <- gsub(pvalue_col, "P.Value", colnames(stats_table))
+      pvalue_col = "P.Value"
+      if (!is.na(orderby) && orderby == pvalue_col)
+        orderby= "P.Value"
+    }
+    if(fdr_col %in% colnames(stats_table)){
+      colnames(stats_table) <- gsub(fdr_col, "fdr", colnames(stats_table))
+      fdr_col = "fdr"
+      if (!is.na(orderby) && orderby == fdr_col)
+        orderby= "fdr"
+    }
+    if(feature_col %in% colnames(stats_table)){
+      colnames(stats_table) <- gsub(feature_col, "feature", colnames(stats_table))
+      if (!is.na(orderby) && orderby == feature_col)
+        orderby= "feature"
+
+    }
     if (method == 'nominal') {
       stats_table <-
         stats_table[which(stats_table[,pvalue_col] <= threshold),]
@@ -1480,4 +1510,56 @@ combine_QI_TF <- function(QI_file, TF_file, output_name){
              colNames = TRUE)
   #borders = "rows",
   #headerStyle = hs)
+}
+
+#' @export
+lollipop_plot <-
+  function(stats_table,
+           threshold = 0.0,
+           method = 'nominal',
+           x = "x",
+           y = "coef",
+           pvalue_col = "P.Value",
+           fdr_col = "fdr",
+           orderby = "coef",
+           y_label = "Y label",
+           x_label = 'X label',
+           feature_col = "feature",
+           point_color = "darkolivegreen4",
+           label = T) {
+    if(x %in% colnames(stats_table) ){
+      colnames(stats_table) <- gsub(x, "x", colnames(stats_table))
+    }
+    if(y %in% colnames(stats_table)){
+      colnames(stats_table) <- gsub(y, "y", colnames(stats_table))
+    }
+    stats_table$x <- as.numeric(stats_table$x)
+    stats_table$y <- as.numeric(stats_table$y)
+    p <- ggplot(stats_table, aes(x=x, y=y, label = feature)) +
+    geom_segment( aes(x=x, xend=x, y=0, yend=y), size = 0.005) +
+    geom_point( fill = point_color,
+                color = 'black',
+                alpha = .5,
+                shape = 21,
+                size = .65,
+                stroke = 0.05) +
+    #theme_light() +
+    theme(
+      panel.grid.major.x = element_blank(),
+      panel.border = element_blank(),
+      axis.ticks.x = element_blank()
+    ) +
+    xlab(x_label) +
+    ylab(y_label) +
+    geom_hline(yintercept=threshold, color="red", size = 0.05) +
+      scale_x_continuous(n.breaks = 10) +
+      scale_y_continuous(n.breaks = 5)+
+    theme_omicsEye()
+    if(label)
+      p <- p +
+      geom_text_repel(
+        size = 2,
+        force = 1,
+        fontface =  "italic")
+    return (p)
 }

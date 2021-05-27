@@ -10,6 +10,9 @@
 #' @param FDR If \code{T}, P-values are first BH-adjusted, and significance
 #' stars are shown as *** < 0.001, ** < 0.01, * < 0.05.
 #' @return ggplot object.
+
+
+#' @export
 ps2heatmap <- function(R2, P, fontsize=5, FDR=T, alpha=NA, beta=NA) {
   library(reshape2)
   library(ggplot2)
@@ -24,7 +27,7 @@ ps2heatmap <- function(R2, P, fontsize=5, FDR=T, alpha=NA, beta=NA) {
   df$varExpPct <- sprintf("%.1f%%", 100*df$R2)
   df$varExpPct[is.na(df$R2)] <- ""
   df$NAtext <- ""
-  df$NAtext[is.na(df$R2)] <- "N/A"
+  df$NAtext[is.na(df$R2)] <- "" #"N/A"
   df$stars <- cut(df$P, breaks=c(-Inf, 0.001, 0.01, 0.05, Inf), c("***", "**", "*", ""))
   df$stars[is.na(df$R2)] <- ""
 

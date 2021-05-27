@@ -568,7 +568,8 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
                         ev = 10/(dat$ns*dat$nf), # Extreme values
                         minx = quantile(dat$x[is.finite(dat$x) & (dat$x>0)], ev),
                         maxx = quantile(dat$x[is.finite(dat$x) & (dat$x>0)], 1-ev),
-                        metanames = NA, reorder = T, divergent0 = NA) {
+                        metanames = NA, reorder = T, divergent0 = NA,
+                        show_colnames = T, show_rownames = T) {
 
     if (dat$ns == 0 || dat$nf == 0) {
         return (plot.new())
@@ -585,8 +586,8 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
     }
 
     def.params <- list()
-    def.params$show_colnames <- dat$ns <= 50
-    def.params$show_rownames <- dat$nf <= 40#40
+    def.params$show_colnames <- show_colnames #dat$ns <= 50
+    def.params$show_rownames <- show_rownames #dat$nf <= 40#40
     def.params$clustering_distance_rows <- if(divergent0) {"euclidean"} else {"bray/curtis"}
     def.params$clustering_distance_cols <- def.params$clustering_distance_rows
     def.params$cluster_rows <- dat$nf > 1
@@ -707,6 +708,7 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
 #         D <- dsvdis(x, "bray/curtis")
 #         return (reorder.hclust(hc, D)) # D is not what is expected here
 #     }
+
 
     args <- c(list(mat=x), params, def.params)
     args <- args[unique(names(args))]
