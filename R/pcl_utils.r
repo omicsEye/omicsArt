@@ -569,7 +569,7 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
                         minx = quantile(dat$x[is.finite(dat$x) & (dat$x>0)], ev),
                         maxx = quantile(dat$x[is.finite(dat$x) & (dat$x>0)], 1-ev),
                         metanames = NA, reorder = T, divergent0 = NA,
-                        show_colnames = T, show_rownames = T) {
+                        show_colnames = T, show_rownames = T, treeheight_row = 100, treeheight_col= 100 ) {
 
     if (dat$ns == 0 || dat$nf == 0) {
         return (plot.new())
@@ -602,8 +602,8 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
         def.params$color <- viridis(100)
         #def.params$color <- colorRampPalette(c("dodgerblue","goldenrod1","firebrick"))(100)
     }
-    def.params$treeheight_row <- 100
-    def.params$treeheight_col <- 100
+    def.params$treeheight_row <- treeheight_row
+    def.params$treeheight_col <- treeheight_col
     def.params$border_color <- NA
     def.params$cuttree_rows <- 5
     def.params$cuttree_cols <- 5
