@@ -1,4 +1,7 @@
-
+for (lib in c('diffusionMap', 'labdsv', 'seriation', 'signal', 'tsne')) {
+    if (!suppressPackageStartupMessages(require(lib, character.only = TRUE)))
+        stop(paste("Please install the R package: ", lib))
+}
 # -----------------------------------------------------------------------------
 #  PCL I/O
 
