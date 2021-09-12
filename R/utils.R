@@ -15,7 +15,14 @@ for (lib in c(
   "future",
   "cowplot",
   "openxlsx",
-  "readxl"
+  "readxl",
+  "tsne",
+  "signal",
+  "diffusionMap",
+  "seriation",
+  "labdsv",
+  "ropls"
+
 )) {
   if (!suppressPackageStartupMessages(require(lib, character.only = TRUE)))
     stop(paste("Please install the R package: ", lib))
