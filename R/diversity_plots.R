@@ -64,7 +64,7 @@ alpha_boxplot <- function(stats_table, meta = "group", value = "value", pvalue= 
       hjust = 1,
       vjust = 1,
       label = sprintf(
-        "Kruskal-Wallis p-value: %.4f",
+        "P: %.4f",
         pvalue
       ) ,
       color = "black",
@@ -112,7 +112,7 @@ alpha_scatterplot <- function(stats_table, meta = "group", value = "value", pval
       hjust = 1,
       vjust = 1,
       label = sprintf(
-        "Spearman p-value: %.4f",
+        "P: %.4f",
         pvalue
       ) ,
       color = "black",
@@ -174,4 +174,10 @@ alpha_diversity_all <- function(data, metadata){
       print(paste('error:', e))
     })
   }
+
+  result <- list()
+  result$diversity_test_plots <- alpha_diversity_plots
+  result$alpha_diversity_test <- alpha_diversity_test
+  result$alpha_diversity_data <- alpha_diversity_data
+  return (result)
 }
