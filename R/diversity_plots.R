@@ -123,6 +123,7 @@ alpha_scatterplot <- function(stats_table, meta = "group", value = "value", pval
   return(alpha_plot)
 }
 
+#' @export
 alpha_diversity_all <- function(data, metadata){
   alpha_diversity_data <- metadata
   alpha_diversity_data$alpha <- diversity(t(data), "shannon")
