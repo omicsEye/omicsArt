@@ -89,8 +89,36 @@ parameters:
 
 * ID: is a word to use identifier for features (metabolites), the options are `Meatbolite`, `HMDB_ID`, and `Compound_ID`. 
 
-## Output files ##
+## Diversity plots ##
 
-Comming soon
+* data: includes taxa profiles n*m where n is number of observations (samples) and m are number features (e.g. microbila species or taxa). 
+
+* metadata: includes  n*p where n is number of observations (samples) and p are number of metadat or information about samples (e.g. age, sex, and health status).
+
+```
+infant_results <- omicsArt::diversity(data, metadat)
+infant_alpha_diversity_data <- infant_results$alpha_diversity_data
+infant_alpha_diversity_test <- infant_results$alpha_diversity_test
+infant_alpha_diversity_plots <- infant_results$diversity_test_plots
+infant_overall_diversity_barplot <- infant_results$overall_diversity_barplot
+
+
+pdf(
+  paste('analysis', '/alpaha_diversity.pdf', sep = ''),
+  width = 2.4,
+  height = 2.25,
+  onefile = TRUE
+)
+
+for (meta in unique(colnames(metadata))){
+  tryCatch({
+    stdout <-
+      capture.output(print(alpha_diversity_plots[[meta]]), type = "message")
+  }, error = function(e) {
+    print(meta)
+    print(paste('error:', e))
+  })
+}
+```
 
 ## [User Manual! (in the wiki)](https://github.com/omicsEye/omicsArt/wiki) ##

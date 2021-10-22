@@ -123,10 +123,25 @@ alpha_scatterplot <- function(stats_table, meta = "group", value = "value", pval
   return(alpha_plot)
 }
 
+overall_diversity_bar <- function(alpha_diversity_test){
+  alpha_diversity_test <- subset(alpha_diversity_test, !is.na(alpha_diversity_test$P.value))
+  alpha_diversity_test$gwfill[alpha_diversity_test$P.value <0.05] <- "#002654"
+  alpha_diversity_test$gwfill[alpha_diversity_test$P.value >=0.05] <- "#E5D19D"
+  alpha_diversity_test$gwfill[is.na(alpha_diversity_test$P.value)] <- "gray"
+  overall_diversity_bar_plot <- ggplot2::ggplot(data=subset(alpha_diversity_test, !is.na(alpha_diversity_test$P.value)),
+                                aes(x= reorder(Metadata, -P.value), y=-log(P.value) )) +
+  xlab("")+ylab("-log(p-value)")+
+  ggplot2::geom_bar(stat="identity", fill = alpha_diversity_test$gwfill, alpha = 0.5, size=0.1) + omicsArt::theme_omicsEye()+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
+  #scale_fill_manual(values=c(alpha_diversity_test$gwfill)) +
+  ggplot2::geom_hline(yintercept = -log(0.05), color = "red", size = 0.1)
+
+ return(overall_diversity_bar_plot)
+}
+
 #' @export
-alpha_diversity_all <- function(data, metadata){
+diversity <- function(data, metadata){
   alpha_diversity_data <- metadata
-  alpha_diversity_data$alpha <- diversity(t(data), "shannon")
+  alpha_diversity_data$alpha <- vegan::diversity(data, "shannon")
 
   alpha_diversity_test <-
     setNames(data.frame(matrix(
@@ -149,17 +164,17 @@ alpha_diversity_all <- function(data, metadata){
       print(meta)
       #print(tem_kruskal.test$p.value)
       #alpha_diversity_data[meta,"P.value" ] <-tem_kruskal.test$p.value
-      if (is.numeric(alpha_diversity_data[colnames(data), meta]) &
-          length(unique(alpha_diversity_data[colnames(data), meta])) > 2) {
-        res <- cor.test(sapply(alpha_diversity_data[colnames(data), meta], as.numeric),
-                        sapply(alpha_diversity_data[colnames(data), "alpha"], as.numeric), method = "spearman")
+      if (is.numeric(alpha_diversity_data[rownames(data), meta]) &
+          length(unique(alpha_diversity_data[rownames(data), meta])) > 2) {
+        res <- cor.test(sapply(alpha_diversity_data[rownames(data), meta], as.numeric),
+                        sapply(alpha_diversity_data[rownames(data), "alpha"], as.numeric), method = "spearman")
         temp_pval <- res$p.value
         print(temp_pval)
         alpha_diversity_plots[[meta]] <- alpha_scatterplot(stats_table=alpha_diversity_data ,
                                                            meta = meta, value = "alpha",
                                                            pvalue=temp_pval, xlabel = meta, ylabel= 'Shannon index')
       }else{
-        tem_kruskal.test <- kruskal.test(alpha_diversity_data[colnames(data), "alpha"], alpha_diversity_data[colnames(data), meta] )
+        tem_kruskal.test <- kruskal.test(alpha_diversity_data[rownames(data), "alpha"], alpha_diversity_data[rownames(data), meta] )
         temp_pval <- tem_kruskal.test$p.value
         alpha_diversity_plots[[meta]] <- alpha_boxplot(stats_table=alpha_diversity_data ,
                                                        meta = meta, value = "alpha",
@@ -175,10 +190,13 @@ alpha_diversity_all <- function(data, metadata){
       print(paste('error:', e))
     })
   }
-
+  overall_diversity_barplot <- overall_diversity_bar(alpha_diversity_test)
   result <- list()
   result$diversity_test_plots <- alpha_diversity_plots
   result$alpha_diversity_test <- alpha_diversity_test
   result$alpha_diversity_data <- alpha_diversity_data
+  result$overall_diversity_barplot <- overall_diversity_barplot
   return (result)
 }
+
+
