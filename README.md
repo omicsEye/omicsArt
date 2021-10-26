@@ -21,7 +21,7 @@ omicsArt is tool for quality control, statistical analysis, and visualization of
         'pscl', 'logging', 'ggrepel', 'gridExtra', 'future', 'cowplot',
         'Hmisc', 'MultiDataSet', 'TSP', 'htmlTable', 'igraph', 'insight',
         'lubridate', 'mgcv', 'mvtnorm', 'optparse', 'parameters', 'pillar',
-        'pkgload', 'plotly', 'rlang', 'rvest', 'seriation', 'usethis', 'viridis,
+        'pkgload', 'plotly', 'rlang', 'rvest', 'seriation', 'usethis', 'viridis',
         'xfun', 'yulab.utils', "labdsv", "seriation","diffusionMap"), repos='http://cran.r-project.org')
         if (!requireNamespace("BiocManager", quietly = TRUE))
           install.packages("BiocManager")
