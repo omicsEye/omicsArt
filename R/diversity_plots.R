@@ -139,9 +139,9 @@ overall_diversity_bar <- function(alpha_diversity_test){
 }
 
 #' @export
-diversity <- function(data, metadata){
+diversity_test <- function(data, metadata, method = "shannon", output = NA){
   alpha_diversity_data <- metadata
-  alpha_diversity_data$alpha <- vegan::diversity(data, "shannon")
+  alpha_diversity_data$alpha <- vegan::diversity(data, method)
 
   alpha_diversity_test <-
     setNames(data.frame(matrix(
@@ -151,12 +151,13 @@ diversity <- function(data, metadata){
   alpha_diversity_plots <- vector('list', length(unique(colnames(metadata))))
   names(alpha_diversity_plots) <- unique(colnames(metadata))
   i = 1
-  pdf(
-    paste('analysis', '/alpaha_diversity.pdf', sep = ''),
-    width = 2.4,
-    height = 2.25,
-    onefile = TRUE
-  )
+  if (!is.na(output))
+    pdf(
+      paste('analysis', '/alpaha_diversity.pdf', sep = ''),
+      width = 2.4,
+      height = 2.25,
+      onefile = TRUE
+    )
   for (meta in unique(colnames(metadata))){
     temp_pval <- NA
 
@@ -172,19 +173,20 @@ diversity <- function(data, metadata){
         print(temp_pval)
         alpha_diversity_plots[[meta]] <- alpha_scatterplot(stats_table=alpha_diversity_data ,
                                                            meta = meta, value = "alpha",
-                                                           pvalue=temp_pval, xlabel = meta, ylabel= 'Shannon index')
+                                                           pvalue=temp_pval, xlabel = meta, ylabel= paste(method, 'index'))
       }else{
         tem_kruskal.test <- kruskal.test(alpha_diversity_data[rownames(data), "alpha"], alpha_diversity_data[rownames(data), meta] )
         temp_pval <- tem_kruskal.test$p.value
         alpha_diversity_plots[[meta]] <- alpha_boxplot(stats_table=alpha_diversity_data ,
                                                        meta = meta, value = "alpha",
-                                                       pvalue=temp_pval, xlabel = meta, ylabel= 'Shannon index')
+                                                       pvalue=temp_pval, xlabel = meta,  ylabel= paste(method, 'index'))
       }
       alpha_diversity_test[meta, "P.value"] <- temp_pval
       alpha_diversity_test[meta, "Metadata"] <- meta
       i <- i + 1
-      stdout <-
-        capture.output(print(alpha_diversity_plots[[meta]]), type = "message")
+      if (!is.na(output))
+        stdout <-
+          capture.output(print(alpha_diversity_plots[[meta]]), type = "message")
     }, error = function(e) {
       print(meta)
       print(paste('error:', e))

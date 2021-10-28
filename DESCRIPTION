@@ -11,6 +11,6 @@ Description: Provides statitical tests, visulization, and manipulation of omics 
 License: MIT License
 Encoding: UTF-8
 LazyData: true
-Collate: fit.R utils.R theme_omicsEye.R	plsda.R mol_simailrity.R pcl_utils.r qc.R	ps2heatmap.R m2heatmap.R diversity_plots.R
+Collate: fit.R utils.R theme_omicsEye.R	plsda.R mol_simailrity.R pcl_utils.r qc.R	ps2heatmap.R m2heatmap.R diversity_plots.R geo_maps.R
 RoxygenNote: 7.1.0
   

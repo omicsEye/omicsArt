@@ -96,7 +96,7 @@ parameters:
 * metadata: includes  n*p where n is number of observations (samples) and p are number of metadat or information about samples (e.g. age, sex, and health status).
 
 ```
-infant_results <- omicsArt::diversity(data, metadat)
+infant_results <- omicsArt::diversity_test(data, metadat)
 infant_alpha_diversity_data <- infant_results$alpha_diversity_data
 infant_alpha_diversity_test <- infant_results$alpha_diversity_test
 infant_alpha_diversity_plots <- infant_results$diversity_test_plots
