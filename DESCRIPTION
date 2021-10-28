@@ -1,16 +1,19 @@
 Package: omicsArt
-Title: omicsArt
-Version: 0.0.0.9000
+Title: omics pattern discovery by visualization 
+Version: 1.0.0.0
+Date: 2021-10-28
+Url: https://github.com/omicsEye/omicsArt
 Authors@R: 
     person(given = "Ali",
            family = "Rahnavard",
            role = c("aut", "cre"),
            email = "gholamali.rahnavard@gmail.com",
            comment = c(ORCID = "0000-0002-9710-0248"))
-Description: Provides statitical tests, visulization, and manipulation of omics data.
+Description: A generic ggplot2 based package with various visualization and statistical functions to find patterns in complex omics data.
 License: MIT License
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.6)
 Collate: fit.R utils.R theme_omicsEye.R	plsda.R mol_simailrity.R pcl_utils.r qc.R	ps2heatmap.R m2heatmap.R diversity_plots.R geo_maps.R
 RoxygenNote: 7.1.0
   
