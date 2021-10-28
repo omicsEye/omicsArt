@@ -89,7 +89,7 @@ parameters:
 
 * ID: is a word to use identifier for features (metabolites), the options are `Meatbolite`, `HMDB_ID`, and `Compound_ID`. 
 
-## Diversity plots ##
+## Diversity test and visualization ##
 
 * data: includes taxa profiles n*m where n is number of observations (samples) and m are number features (e.g. microbila species or taxa). 
 
