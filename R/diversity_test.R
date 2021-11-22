@@ -68,7 +68,7 @@ alpha_boxplot <- function(stats_table, meta = "group", value = "value", pvalue= 
         pvalue
       ) ,
       color = "black",
-      size = 2,
+      size = 1.5,
       fontface = "italic"
     )+
     theme_omicsEye() + nature_theme(stats_table["value"],ylabel)+theme(legend.position = "none")
@@ -116,21 +116,27 @@ alpha_scatterplot <- function(stats_table, meta = "group", value = "value", pval
         pvalue
       ) ,
       color = "black",
-      size = 2,
+      size = 1.5,
       fontface = "italic"
     )+
     theme_omicsEye() +theme(legend.position = "none")
   return(alpha_plot)
 }
 
-overall_diversity_bar <- function(alpha_diversity_test){
+overall_diversity_bar <- function(alpha_diversity_test, order = T){
   alpha_diversity_test <- subset(alpha_diversity_test, !is.na(alpha_diversity_test$P.value))
   alpha_diversity_test$gwfill[alpha_diversity_test$P.value <0.05] <- "#002654"
   alpha_diversity_test$gwfill[alpha_diversity_test$P.value >=0.05] <- "#E5D19D"
   alpha_diversity_test$gwfill[is.na(alpha_diversity_test$P.value)] <- "gray"
-  overall_diversity_bar_plot <- ggplot2::ggplot(data=subset(alpha_diversity_test, !is.na(alpha_diversity_test$P.value)),
-                                aes(x= reorder(Metadata, -P.value), y=-log(P.value) )) +
-  xlab("")+ylab("-log(p-value)")+
+  if (order)
+    overall_diversity_bar_plot <- ggplot2::ggplot(data=subset(alpha_diversity_test, !is.na(alpha_diversity_test$P.value)),
+                                aes(x= reorder(Metadata, -P.value), y=-log(P.value) ))
+  else{
+    alpha_diversity_test$Metadata <- factor( alpha_diversity_test$Metadata, levels =  alpha_diversity_test$Metadata)
+    overall_diversity_bar_plot <- ggplot2::ggplot(data=subset(alpha_diversity_test, !is.na(alpha_diversity_test$P.value)),
+                                                  aes(x= Metadata, y=-log(P.value) ))
+  }
+  overall_diversity_bar_plot <- overall_diversity_bar_plot + xlab("")+ylab("-log(p-value)")+
   ggplot2::geom_bar(stat="identity", fill = alpha_diversity_test$gwfill, alpha = 0.5, size=0.1) + omicsArt::theme_omicsEye()+ theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))+
   #scale_fill_manual(values=c(alpha_diversity_test$gwfill)) +
   ggplot2::geom_hline(yintercept = -log(0.05), color = "red", size = 0.1)
@@ -139,17 +145,18 @@ overall_diversity_bar <- function(alpha_diversity_test){
 }
 
 #' @export
-diversity_test <- function(data, metadata, method = "shannon", output = NA){
+diversity_test <- function(data, metadata, method = "shannon", output = NA, order = T){
   alpha_diversity_data <- metadata
   alpha_diversity_data$alpha <- vegan::diversity(data, method)
 
   alpha_diversity_test <-
     setNames(data.frame(matrix(
-      nrow = length(unique(colnames(metadata))),  ncol = 2,
+      nrow = length(colnames(metadata)),  ncol = 2,
     )), c("Metadata", "P.value"))
-  rownames(alpha_diversity_test) <- unique(colnames(metadata))
-  alpha_diversity_plots <- vector('list', length(unique(colnames(metadata))))
-  names(alpha_diversity_plots) <- unique(colnames(metadata))
+  rownames(alpha_diversity_test) <- colnames(metadata)
+  levels(rownames(alpha_diversity_test)) <- colnames(metadata)
+  alpha_diversity_plots <- vector('list', length(colnames(metadata)))
+  names(alpha_diversity_plots) <- colnames(metadata)
   i = 1
   if (!is.na(output))
     pdf(
@@ -158,9 +165,9 @@ diversity_test <- function(data, metadata, method = "shannon", output = NA){
       height = 2.25,
       onefile = TRUE
     )
-  for (meta in unique(colnames(metadata))){
+  for (i in 1:length(colnames(metadata))){
     temp_pval <- NA
-
+    meta <- colnames(metadata)[i]
     tryCatch({
       print(meta)
       #print(tem_kruskal.test$p.value)
@@ -192,8 +199,9 @@ diversity_test <- function(data, metadata, method = "shannon", output = NA){
       print(paste('error:', e))
     })
   }
-  overall_diversity_barplot <- overall_diversity_bar(alpha_diversity_test)
+  overall_diversity_barplot <- overall_diversity_bar(alpha_diversity_test, order = order)
   result <- list()
+  alpha_diversity_test <- alpha_diversity_test[order(alpha_diversity_test$P.value, decreasing = T),]
   result$diversity_test_plots <- alpha_diversity_plots
   result$alpha_diversity_test <- alpha_diversity_test
   result$alpha_diversity_data <- alpha_diversity_data
