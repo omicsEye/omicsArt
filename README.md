@@ -17,16 +17,16 @@ omicsArt is tool for quality control, statistical analysis, and visualization of
     * ``> install.packages('devtools')``
     * ``>library(devtools)``
 2. Install omicsArt (and also all dependencies from CRAN): 
-    * ``install.packages(c('dplyr','pbapply', 'lme4', 'lmerTest', 'car', 'cplm', 
-        'pscl', 'logging', 'ggrepel', 'gridExtra', 'future', 'cowplot',
+    * ``install.packages(c('dplyr','pbapply', 'lme4', 'lmerTest', 'car', 'cplm', 'pscl', 'logging', 'ggrepel', 'gridExtra', 'future', 'cowplot',
         'Hmisc', 'MultiDataSet', 'TSP', 'htmlTable', 'igraph', 'insight',
         'lubridate', 'mgcv', 'mvtnorm', 'optparse', 'parameters', 'pillar',
         'pkgload', 'plotly', 'rlang', 'rvest', 'seriation', 'usethis', 'viridis',
-        'xfun', 'yulab.utils', "labdsv", "seriation","diffusionMap"), repos='http://cran.r-project.org')
-        if (!requireNamespace("BiocManager", quietly = TRUE))
+        'xfun', 'yulab.utils', "labdsv", "seriation","diffusionMap"), repos='http://cran.r-project.org')``
+        
+        ``if (!requireNamespace("BiocManager", quietly = TRUE))
           install.packages("BiocManager")
-        BiocManager::install("ropls")
-    * ``> devtools::install_github('omicsEye/omicsArt', force = TRUE) ``
+        BiocManager::install("ropls")``
+    * ``devtools::install_github('omicsEye/omicsArt', force = TRUE) ``
 
 ### Input files (omics format) ###
 [omicsArt demo](https://github.com/omicsEye/omicsArt/tree/master/demo)
