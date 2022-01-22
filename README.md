@@ -6,9 +6,24 @@ omicsArt is tool for quality control, statistical analysis, and visualization of
 
 **Citation:**
 
+Rahnavard, A. *omicsArt: omics pattern discovery by visualization*. Version 1.0.0.0, https://github.com/omicsEye/omicsArt (2021).
 
 **For installation and a quick demo, read the [omicsArt User Manual](https://github.com/omicsEye/omicsArt/wiki).**
 
+# omicsArt user manual
+
+## Contents ##
+* [Features](#features)
+* [omicsArt](#omicsArt)
+    * [omeClust approach](#omicsArt-approach)
+    * [Requirements](#requirements)
+    * [Installation](#installation)
+* [Orindation plots omicsArt](#getting-started-with-omeClust)
+    * [t-sne plot](#t-sne-plot)
+    * [PCoA plot](#t-sne-plot)
+* [Microbial community diversity](#Microbial-community-diversity)
+    * [Overall tests](#overall-test)
+    * [Diversity metadata associations and plots](#Diversity-metadata-associations-and-plots)
 
 ## Installation ##
 
