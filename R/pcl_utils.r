@@ -566,12 +566,12 @@ pcl.compmatrix.s <- function(dat, fun, symmetric=TRUE) {
 # -----------------------------------------------------------------------------
 #  Heatmap visualization function
 #' @export
-pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
+pcl.heatmap <- function(dat, ..., meta = F, row_meta = F, logspace = F, pseudocount = 0,
                         zerocolor = NA, sqrtspace = F, gamma = 2, as = F,
                         ev = 10/(dat$ns*dat$nf), # Extreme values
                         minx = quantile(dat$x[is.finite(dat$x) & (dat$x>0)], ev),
                         maxx = quantile(dat$x[is.finite(dat$x) & (dat$x>0)], 1-ev),
-                        metanames = NA, reorder = T, divergent0 = NA,
+                        metanames = NA, row_metanames = NA, reorder = T, divergent0 = NA,
                         show_colnames = T, show_rownames = T, treeheight_row = 100, treeheight_col= 100 ) {
 
     if (dat$ns == 0 || dat$nf == 0) {
@@ -601,9 +601,9 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
         mv <- max(1e-10, max(-max(minx, min(dat$x, na.rm=T)), min(maxx, max(dat$x, na.rm=T))))
         def.params$breaks <- c(seq(from=-mv, to=mv, length=101))
     } else {
-        library(viridis)
-        def.params$color <- viridis(100)
-        #def.params$color <- colorRampPalette(c("dodgerblue","goldenrod1","firebrick"))(100)
+        #library(viridis)
+        #def.params$color <- rev(mako(100)) #viridis(100) #
+        def.params$color <- colorRampPalette(c("gray97","goldenrod1","firebrick"))(100)
     }
     def.params$treeheight_row <- treeheight_row
     def.params$treeheight_col <- treeheight_col
@@ -644,9 +644,9 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
     }
 
     params$clustering_distance_rows <- override_clustering(x,
-        params$clustering_distance_rows, def.params$clustering_distance_rows)
+                                                           params$clustering_distance_rows, def.params$clustering_distance_rows)
     params$clustering_distance_cols <- override_clustering(t(x),
-        params$clustering_distance_cols, def.params$clustering_distance_cols)
+                                                           params$clustering_distance_cols, def.params$clustering_distance_cols)
 
     # Perform data transformations
     x <- pmin(pmax(x, minx), maxx) + pseudocount
@@ -691,7 +691,29 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
             names(def.params$annotation_col) <- names2
         }
     }
+    # Add row metadata annotation
+    if (length(row_meta) > 0 && (length(row_meta) > 1 || !is.na(row_meta))) {
+        if (length(row_meta) == 1 && is.logical(row_meta)) {
+            if (row_meta) {
+                def.params$annotation_row <- dat$row_meta[,, drop = F]
+            }
+        } else {
+            def.params$annotation_row <- dat$row_meta[,match(row_meta, colnames(dat$row_meta)), drop = F]
+        }
 
+        for (i in seq_along(def.params$annotation_row)) {
+            if (class(def.params$annotation_row[,i]) == "logical") {
+                def.params$annotation_row[,i] <- factor(def.params$annotation_row[,i])
+            }
+        }
+
+        if (length(metanames) > 1 || !is.na(metanames)) {
+            names2 <- names(def.params$annotation_row)
+            nmatch <- match(names2, names(metanames))
+            names2[!is.na(nmatch)] <- metanames[nmatch[!is.na(nmatch)]]
+            names(def.params$annotation_row) <- names2
+        }
+    }
     if (reorder) {
         def.params$clustering_callback <- function(hc, u) {
             library(seriation)
@@ -706,11 +728,11 @@ pcl.heatmap <- function(dat, ..., meta = F, logspace = F, pseudocount = 0,
         }
     }
 
-#     def.params$clustering_callback <- function(hc, x) {
-#         library(vegan)
-#         D <- dsvdis(x, "bray/curtis")
-#         return (reorder.hclust(hc, D)) # D is not what is expected here
-#     }
+    #     def.params$clustering_callback <- function(hc, x) {
+    #         library(vegan)
+    #         D <- dsvdis(x, "bray/curtis")
+    #         return (reorder.hclust(hc, D)) # D is not what is expected here
+    #     }
 
 
     args <- c(list(mat=x), params, def.params)
