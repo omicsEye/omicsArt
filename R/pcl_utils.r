@@ -707,10 +707,10 @@ pcl.heatmap <- function(dat, ..., meta = F, row_meta = F, logspace = F, pseudoco
             }
         }
 
-        if (length(metanames) > 1 || !is.na(metanames)) {
+        if (length(row_metanames) > 1 || !is.na(row_metanames)) {
             names2 <- names(def.params$annotation_row)
-            nmatch <- match(names2, names(metanames))
-            names2[!is.na(nmatch)] <- metanames[nmatch[!is.na(nmatch)]]
+            nmatch <- match(names2, names(row_metanames))
+            names2[!is.na(nmatch)] <- row_metanames[nmatch[!is.na(nmatch)]]
             names(def.params$annotation_row) <- names2
         }
     }
