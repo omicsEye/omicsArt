@@ -984,11 +984,12 @@ pcl.tsne <- function(dat, D = NA, as = F, asinsqrt = as,index = "bray/curtis", k
     set.seed(seed)
     tsn <- tsne(D, k=k)
     ord <- list(points = tsn, ordnames = sprintf("t-SNE %d", 1:k))
-    if (length(D) == 1 && is.na(D)) {
-        rownames(ord$points) <- rownames(dat$x)
-    }else{
-        rownames(ord$points) <- rownames(D)
-    }
+    rownames(ord$points) <- rownames(dat$x)
+    # if (length(D) == 1 && is.na(D)) {
+    #     rownames(ord$points) <- rownames(dat$x)
+    # }else{
+    #     rownames(ord$points) <- rownames(D)
+    # }
     return (ord)
 }
 

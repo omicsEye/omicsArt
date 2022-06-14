@@ -1062,8 +1062,10 @@ ordplots <-
     if (method == 'tsne') {
       ord <- pcl.tsne(fakepcl)
     } else if (method == 'pcoa') {
-      ord <- pcl.pcoa(fakepcl, k = 3, index = index)#, index = 'euclidean'
-    } else{
+      ord <- pcl.pcoa(fakepcl, k = 3, index = 'bray/curtis')#, index = 'euclidean'
+    } else if (method == 'pca') {
+      ord <- pcl.pcoa(fakepcl, k = 3, index = 'euclidean')#, index = 'euclidean'
+    }else{
       print("The ordination is not implemeted in omicsArt!")
     }
     if (is.na(outputname)) {
