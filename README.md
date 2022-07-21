@@ -23,6 +23,9 @@ Rahnavard, A. *omicsArt: omics pattern discovery by visualization*. Version 1.0.
 -   [Microbial community diversity](#Microbial-community-diversity)
     -   [Overall tests](#overall-test)
     -   [Diversity metadata associations and plots](#Diversity-metadata-associations-and-plots)
+-   [Statistical summary](#statistical-summary)
+    -   [Metadata variable correlation tests](#metadata-variable-corrlation-tests)
+    -   [Statistics summary table](#statistics-summary-table)\
 -   [Multi-barplot form Tweedieverse results](#Multi-barplot-form-Tweedieverse-results)
 
 ## Installation {#installation}
@@ -122,6 +125,12 @@ parameters:
         print(paste('error:', e))
       })
     }
+
+## Statistical summary {#statistical-summary}
+
+### Metadata variable correlation tests {#metadata-variable-corrlation-tests}
+
+### Statistics summary table {#statistics-summary-table}
 
 ## Multi-barplot form Tweedieverse results {#multi-barplot-form-tweedieverse-results}
 
