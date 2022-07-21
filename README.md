@@ -1,6 +1,6 @@
-# omicsArt User Manual
+# *omicsArt* User Manual
 
-omicsArt is tool for quality control, statistical analysis, and visualization of omics data. **`omicsArt` is currently under development and test and we will regularly release the documentation and tutorials**
+***omicsArt*** is tool for quality control, statistical analysis, and visualization of omics data. **`omicsArt` is currently under development and test and we will regularly release the documentation and tutorials**
 
 **Citation:**
 
@@ -17,7 +17,7 @@ Rahnavard, A. *omicsArt: omics pattern discovery by visualization*. Version 1.0.
     -   [omicsArt approach](#omicsArt-approach)
     -   [Requirements](#requirements)
     -   [Installation](#installation)
--   [Orindation plots omicsArt](#getting-started-with-omeClust)
+-   [ Ordination plots omicsArt](#ordination-plots-omicsart)
     -   [t-sne plot](#t-sne-plot)
     -   [PCoA plot](#t-sne-plot)
 -   [Microbial community diversity](#Microbial-community-diversity)
@@ -30,7 +30,7 @@ Rahnavard, A. *omicsArt: omics pattern discovery by visualization*. Version 1.0.
 
 ## Installation {#installation}
 
-### Install omicsArt in RStudio
+### Install *omicsArt* in RStudio
 
 1.  Install devtools :
     -   `> install.packages('devtools')`
@@ -129,6 +129,20 @@ parameters:
 ## Statistical summary {#statistical-summary}
 
 ### Metadata variable correlation tests {#metadata-variable-corrlation-tests}
+
+***metadataCorr*** gets a metadata data frame rows as samples (observations) and columns features and returns a list of results (result) including two matrix (data frames) for p-values of correlations and test statistics, and a heatmap plot (ggplot object).
+
+    # read metadata file
+    metadata <- read.delim(
+      "metatada.tsv",
+      sep = '\t',
+      header = T,
+      fill = F,
+      comment.char = "" ,
+      check.names = F,
+      row.names = 1
+    )
+    result <- omicsArt::metadataCorr(metadata)
 
 ### Statistics summary table {#statistics-summary-table}
 

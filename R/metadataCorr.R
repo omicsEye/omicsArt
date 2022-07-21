@@ -3,17 +3,6 @@
 library(vegan)
 library(permute)
 
-# read metadata file
-# metadata <- read.delim(
-#   "/Users/rah/Box/n3c_aspirin/data/test.csv",
-#   sep = ',',
-#   header = T,
-#   fill = F,
-#   comment.char = "" ,
-#   check.names = F,
-#   row.names = 1
-# )
-
 #' @export
 metadataCorr <- function(metadata){
   metadata[metadata=="null"] <- NA
@@ -121,28 +110,32 @@ metadataCorr <- function(metadata){
 
   # heatmap3::heatmap3(P_perm)
   # library(RColorBrewer)
-  # pheatmap::pheatmap(-log(P_perm + 0.00000001),
-  #                    #cellwidth = 5,
-  #                    #cellheight = 5,
-  #                    # changed to 3
-  #                    #main = title,
-  #                    #fontsize = 6,
-  #                    kmeans_k = NA,
-  #                    border = TRUE,
-  #                    show_rownames = TRUE,
-  #                    show_colnames = TRUE,
-  #                    scale = "none",
-  #                    cluster_rows = TRUE,
-  #                    cluster_cols = TRUE,
-  #                    clustering_distance_rows = "euclidean",
-  #                    clustering_distance_cols = "euclidean",
-  #                    legend = TRUE,
-  #                    border_color = 'grey93',
-  #                    color = colorRampPalette(brewer.pal(n = 7, name = "Blues"))(100),# color(range_value*100),
-  #                    #breaks = breaks,
-  #                    treeheight_row = 0,
-  #                    treeheight_col = 0,
-  #                    display_numbers = matrix(ifelse(
-  #                      P_perm< 0.01, "*",  ""), nrow(P_perm)))
-  return (P_perm, R_perm)
+  pval_hetamap <- pheatmap::pheatmap(-log(P_perm + 0.00000001),
+                     #cellwidth = 5,
+                     #cellheight = 5,
+                     # changed to 3
+                     #main = title,
+                     #fontsize = 6,
+                     kmeans_k = NA,
+                     border = TRUE,
+                     show_rownames = TRUE,
+                     show_colnames = TRUE,
+                     scale = "none",
+                     cluster_rows = TRUE,
+                     cluster_cols = TRUE,
+                     clustering_distance_rows = "euclidean",
+                     clustering_distance_cols = "euclidean",
+                     legend = TRUE,
+                     border_color = 'grey93',
+                     color = colorRampPalette(brewer.pal(n = 7, name = "Blues"))(100),# color(range_value*100),
+                     #breaks = breaks,
+                     treeheight_row = 0,
+                     treeheight_col = 0,
+                     display_numbers = matrix(ifelse(
+                       P_perm< 0.01, "*",  ""), nrow(P_perm)))
+  result <- list()
+  result$pval_hetamap <- pval_hetamap
+  result$P_perm <- P_perm
+  result$R_perm <- R_perm
+  return (result)
 }
