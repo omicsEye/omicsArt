@@ -20,17 +20,17 @@ metadataCorr <- function(metadata){
     # meta1 is  Continuous
     if (is.numeric(metadata[1, meta1]) &
         length(unique(metadata[[meta1]])) > 2) {
-      logging::loginfo(
-        "Continuous data: %s",
-        meta1)
+      # logging::loginfo(
+      #   "Continuous data: %s",
+      #   meta1)
       for (meta2 in colnames(metadata)){
         #if (meta == meta2) next
         if (is.numeric(metadata[1, meta2]) &
             length(unique(metadata[[meta2]])) > 2) {
           # meta2 is  Continuous
-          logging::loginfo(
-            "Continuous data: %s",
-            meta2)
+          # logging::loginfo(
+          #   "Continuous data: %s",
+          #   meta2)
           tryCatch({
             res <- NA
             res <- cor.test(sapply(metadata[meta1], as.numeric), sapply(metadata[meta2], as.numeric), method = "spearman")
@@ -44,9 +44,9 @@ metadataCorr <- function(metadata){
           })
         }else if(length(unique(metadata[[meta2]])) > 2){
           # meta2 is  categorical
-          logging::loginfo(
-            "Categorical data: %s",
-            meta2)
+          # logging::loginfo(
+          #   "Categorical data: %s",
+          #   meta2)
           tryCatch({
             res <- NA
             res <- kruskal.test(get(meta1)~get(meta2), data = metadata)
@@ -61,17 +61,17 @@ metadataCorr <- function(metadata){
         }
       }
     }else if (length(unique(metadata[[meta1]])) > 2) {
-      logging::loginfo(
-        "Categorical data: %s",
-        meta1)
+      # logging::loginfo(
+      #   "Categorical data: %s",
+      #   meta1)
       for (meta2 in colnames(metadata)){
         #if (meta == meta2) next
         if (is.numeric(metadata[1, meta2]) &
             length(unique(metadata[[meta2]])) > 2) {
           # meta2 is  Continuous
-          logging::loginfo(
-            "Continuous data: %s",
-            meta2)
+          # logging::loginfo(
+          #   "Continuous data: %s",
+          #   meta2)
           tryCatch({
             res <- NA
             res <- kruskal.test(get(meta2)~get(meta1), data = metadata)
@@ -85,9 +85,9 @@ metadataCorr <- function(metadata){
           })
         }else if(length(unique(metadata[[meta2]])) > 2){
           # meta2 is  categorical
-          logging::loginfo(
-            "Categorical data: %s",
-            meta2)
+          # logging::loginfo(
+          #   "Categorical data: %s",
+          #   meta2)
           tryCatch({
             res <- NA
             res <- chisq.test(metadata[[meta1]], metadata[[meta2]], correct=FALSE)
