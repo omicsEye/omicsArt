@@ -4,10 +4,15 @@ library(vegan)
 library(permute)
 
 #' @export
-metadataCorr <- function(metadata){
+metadataCorr <- function(metadata, entropy_threshold = 0.5){
+  metadata <- metadata3
   metadata[metadata=="null"] <- NA
   metadata[metadata=="NULL"] <- NA
+  metadata[metadata==""] <- NA
   #metadata <- omicsArt::numeric_dataframe(metadata)
+
+  #remove features with entropy <= entropy_threshold
+  metadata <- metadata[, apply(metadata, 2, entropy) >= entropy_threshold]
 
   # create a matrix for p-values and test statistics
   M_perm <- matrix(NA, nrow=ncol(metadata), ncol=ncol(metadata))
@@ -52,6 +57,7 @@ metadataCorr <- function(metadata){
             res <- kruskal.test(get(meta1)~get(meta2), data = metadata)
             P_perm[meta1, meta2] <- res$p.value
             R_perm[meta1, meta2] <- res$statistic
+            print(meta1, meta2,res$statistic)
           },
           error = function(e) {
             print(meta1)
@@ -103,10 +109,10 @@ metadataCorr <- function(metadata){
       }
     }
   }
-  R_perm[R_perm>1]<- NA
+  #R_perm[R_perm>1]<- NA
   omnibus_heatmap <- omicsArt::ps2heatmap(R_perm, P_perm, FDR = F)
-  P_perm <- P_perm[ , colSums(is.na(P_perm)) < 60]
-  P_perm<- P_perm[colnames(P_perm), ]
+  #P_perm <- P_perm[ , colSums(is.na(P_perm)) < 60]
+  #P_perm<- P_perm[colnames(P_perm), ]
 
   # heatmap3::heatmap3(P_perm)
   # library(RColorBrewer)
@@ -121,8 +127,8 @@ metadataCorr <- function(metadata){
                      show_rownames = TRUE,
                      show_colnames = TRUE,
                      scale = "none",
-                     cluster_rows = TRUE,
-                     cluster_cols = TRUE,
+                     cluster_rows = T,
+                     cluster_cols = T,
                      clustering_distance_rows = "euclidean",
                      clustering_distance_cols = "euclidean",
                      legend = TRUE,
