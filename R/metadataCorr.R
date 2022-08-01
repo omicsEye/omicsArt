@@ -5,7 +5,6 @@ library(permute)
 
 #' @export
 metadataCorr <- function(metadata, entropy_threshold = 0.5){
-  metadata <- metadata3
   metadata[metadata=="null"] <- NA
   metadata[metadata=="NULL"] <- NA
   metadata[metadata==""] <- NA
