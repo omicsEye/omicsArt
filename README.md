@@ -102,11 +102,11 @@ parameters:
 
 <!-- -->
 
-    infant_results <- omicsArt::diversity_test(data, metadat)
-    infant_alpha_diversity_data <- infant_results$alpha_diversity_data
-    infant_alpha_diversity_test <- infant_results$alpha_diversity_test
-    infant_alpha_diversity_plots <- infant_results$diversity_test_plots
-    infant_overall_diversity_barplot <- infant_results$overall_diversity_barplot
+    results <- omicsArt::diversity_test(data, metadat)
+    alpha_diversity_data <- results$alpha_diversity_data
+    alpha_diversity_test <- results$alpha_diversity_test
+    alpha_diversity_plots <- results$diversity_test_plots
+    overall_diversity_barplot <- results$overall_diversity_barplot
 
 
     pdf(
@@ -125,6 +125,57 @@ parameters:
         print(paste('error:', e))
       })
     }
+    pdf(
+      paste('analysis', '/alpaha_diversity_barplot.pdf', sep = ''),
+      width = 2.4,
+      height = 2.25,
+      onefile = TRUE
+    )
+    print(overall_diversity_barplot)
+
+
+    
+  fig1 <- ggdraw() +
+  draw_plot(overall_diversity_barplot,
+            x = 0, y = .5, width = 1, height = .5) +
+  draw_plot(alpha_diversity_plots[[meta]] + theme(
+    axis.title.x = element_text(size = 7),
+    axis.text.x = element_text(size = 5),
+    axis.title.y = element_text(size = 7, face ="bold"),
+    axis.text.y = element_text(size = 5)), x = 0, y = 0, width = .165, height = .5) +
+  draw_plot(alpha_diversity_plots[[meta]] + theme(
+    axis.title.x = element_text(size = 7),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_blank(),
+    axis.text.y = element_text(size = 5)), x = .165, y = 0, width = .165, height = .5) +
+  draw_plot(alpha_diversity_plots[[meta]] + theme(
+    axis.title.x = element_text(size = 7),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_blank(),
+    axis.text.y = element_text(size = 5)), x = .33, y = 0, width = .165, height = .5) +
+  draw_plot(alpha_diversity_plots[[meta]] + theme(
+    axis.title.x = element_text(size = 7),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_blank() ,
+    axis.text.y = element_text(size = 5)), x = .495, y = 0, width = .165, height = .5) +
+  draw_plot(alpha_diversity_plots[[meta]] + theme(
+    axis.title.x = element_text(size = 7),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_blank() ,
+    axis.text.y = element_text(size = 5)), x = .66, y = 0, width = .165, height = .5) +
+  draw_plot(alpha_diversity_plots[[meta]] + theme(
+    axis.title.x = element_text(size = 7),
+    axis.text.x = element_text(size = 7),
+    axis.title.y = element_blank() ,
+    axis.text.y = element_text(size = 5)), x = .825, y = 0, width = .165, height = .5) +
+
+  draw_plot_label((label = c("a", "b", "c", "d", "e")),
+                  size = 7,x = c(0, 0, 0, .17, .33, .5, 0.65, 0.82), y = c(1, .6, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26))
+fig1
+
+ggsave(filename = 'Manuscript/Figures/Fig1/fig1.pdf', plot=fig4, width = 183, height = 150, units = "mm", dpi = 350)
+ggsave(filename = 'Manuscript/Figures/Fig1/fig1.png', plot=fig4, width = 183, height = 150, units = "mm", dpi = 350)
+
 
 ## Statistical summary {#statistical-summary}
 

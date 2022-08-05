@@ -1571,4 +1571,18 @@ lollipop_plot <-
         force = 1,
         fontface =  "italic")
     return (p)
+  }
+# Adapted form: https://rstudio-pubs-static.s3.amazonaws.com/455435_30729e265f7a4d049400d03a18e218db.html
+
+#' @export
+entropy <- function(target) {
+  #if(all(is.na(target)))  0
+  freq <- table(target)/length(target)
+  # vectorize
+  vec <- as.data.frame(freq)[,2]
+  #drop 0 to avoid NaN resulting from log2
+  vec<-vec[vec>0]
+  #compute entropy
+  -sum(vec * log2(vec))
 }
+
