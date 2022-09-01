@@ -1285,12 +1285,12 @@ pcl.ordplot <- function(dat, ord, pcos = 2, pointoutline = T,
         } else if (length(levels(colby)) > 9) {
             library(RColorBrewer)
             ggp <- ggp + ggscale_manual(values = colorRampPalette(
-                rev(brewer.pal(n = 7, name = "Spectral")))(length(levels(colby))))
+                brewer.pal(n = 7, name = "Spectral")))(length(levels(colby)))
             col_guide <- guide_legend(title = colour_title,
                                     override.aes = list(size=3, shape=21))
         } else {
             # Discrete data uses the Set1 palette
-            ggp <- ggp + scale_fill_brewer(palette = "Spectral", direction=-1)
+            ggp <- ggp + scale_fill_brewer(palette = "Spectral")
             col_guide <- guide_legend(title = colour_title,
                                 override.aes = list(size=3, shape=21))
         }
