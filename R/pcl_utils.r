@@ -610,6 +610,7 @@ pcl.heatmap <- function(dat, ..., meta = F, row_meta = F, logspace = F, pseudoco
     def.params$border_color <- NA
     def.params$cuttree_rows <- 5
     def.params$cuttree_cols <- 5
+    def.params$fontsize <- 6
 
     x <- t(dat$x)
     x[!is.finite(x)] <- 0
