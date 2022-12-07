@@ -36,9 +36,9 @@ Rahnavard, A. *omicsArt: omics pattern discovery by visualization*. Version 1.0.
     -   `> install.packages('devtools')`
     -   `>library(devtools)`
 2.  Install omicsArt (and also all dependencies from CRAN):
-    -   `install.packages(c('dplyr','pbapply', 'lme4', 'lmerTest', 'car', 'cplm', 'pscl', 'logging', 'ggrepel', 'gridExtra', 'future', 'cowplot',      'Hmisc', 'MultiDataSet', 'TSP', 'htmlTable', 'igraph', 'insight',      'lubridate', 'mgcv', 'mvtnorm', 'optparse', 'parameters', 'pillar',      'pkgload', 'plotly', 'rlang', 'rvest', 'seriation', 'usethis', 'viridis',    'signal', 'tsne', 'openxlsx', 'readxl', 'xfun', 'yulab.utils', "labdsv", "seriation","diffusionMap"), repos='http://cran.r-project.org')`
+    -   `install.packages(c('dplyr','pbapply', 'lme4', 'lmerTest', 'car', 'cplm', 'pscl', 'logging', 'ggrepel', 'gridExtra', 'future', 'cowplot',      'Hmisc', 'TSP', 'htmlTable', 'igraph', 'insight',      'lubridate', 'mgcv', 'mvtnorm', 'optparse', 'parameters', 'pillar',      'pkgload', 'plotly', 'rlang', 'rvest', 'seriation', 'usethis', 'viridis',    'signal', 'tsne', 'openxlsx', 'readxl', 'xfun', 'yulab.utils', "labdsv", "seriation","diffusionMap"), repos='http://cran.r-project.org')`
 
-        `if (!requireNamespace("BiocManager", quietly = TRUE))              install.packages("BiocManager")   BiocManager::install("ropls")`
+        `if (!requireNamespace("BiocManager", quietly = TRUE))              install.packages("BiocManager")   BiocManager::install(c("ropls", "MultiDataSet")`
 
     -   `devtools::install_github('omicsEye/omicsArt', force = TRUE)`
 
