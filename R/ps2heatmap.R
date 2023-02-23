@@ -48,8 +48,9 @@ ps2heatmap <- function(R2, P, fontsize=5, FDR=T, alpha=NA, beta=NA) {
 
     # Label colors flip to white when the color is too dark
     df$lblcolor <- ifelse(qbeta(df$R2, alpha, beta) < 0.8, "black", "white")
+    df$lblcolor[is.na(df$lblcolor)] <- "white"
   }
-
+  df$lblcolor[is.na(df$lblcolor)] <- "white"
 
   ggp <- ggplot(data=df, aes(x=Dataset, y=Feature)) +
     geom_tile(aes(fill=R2)) +
