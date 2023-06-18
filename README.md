@@ -34,7 +34,7 @@ Rahnavard, A. *omicsArt: omics pattern discovery by visualization*. Version 1.0.
 
 1.  Install devtools :
     -   `> install.packages('devtools')`
-    -   `>library(devtools)`
+    -   `> library(devtools)`
 2.  Install omicsArt (and also all dependencies from CRAN):
 
 ```{r}
@@ -53,7 +53,7 @@ if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
 
-BiocManager::install(c("ropls", "MultiDataSet"))`
+BiocManager::install(c("ropls", "MultiDataSet"))
 
 devtools::install_github('omicsEye/omicsArt', force = TRUE)
 ```
