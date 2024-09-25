@@ -1,33 +1,3 @@
-#!/usr/bin/env Rscript
-
-# Load Required Packages
-for (lib in c(
-  "dplyr",
-  "pbapply",
-  "lme4",
-  "lmerTest",
-  "car",
-  "cplm",
-  "pscl",
-  "logging",
-  "ggrepel",
-  "gridExtra",
-  "future",
-  "cowplot",
-  "openxlsx",
-  "readxl",
-  "tsne",
-  "signal",
-  "diffusionMap",
-  "seriation",
-  "labdsv",
-  "ropls"
-
-)) {
-  if (!suppressPackageStartupMessages(require(lib, character.only = TRUE)))
-    stop(paste("Please install the R package: ", lib))
-}
-
 # This script contains functions to manipulate metbolite profiling data
 #' @export
 numeric_dataframe <- function(input) {

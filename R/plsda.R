@@ -1,13 +1,3 @@
-for (lib in c('ropls')) {
-  if (!suppressPackageStartupMessages(require(lib, character.only = TRUE)))
-    stop(paste("Please install the R package: ", lib))
-}
-
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  install.packages("BiocManager")
-}
-BiocManager::install("ropls")
-
 mplsda <- function(data, metadata, column, output) {
 
   library(ropls)

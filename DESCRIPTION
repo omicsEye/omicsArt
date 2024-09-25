@@ -15,5 +15,25 @@ Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.6)
 Collate: fit.R utils.R theme_omicsEye.R	plsda.R mol_simailrity.R pcl_utils.r qc.R	ps2heatmap.R m2heatmap.R diversity_test.R geo_maps.R summary_table.R metadataCorr.R
-RoxygenNote: 7.1.0
-  
+RoxygenNote: 7.3.2
+biocViews:
+Imports: 
+    BiocManager,
+    car,
+    cplm,
+    diffusionMap,
+    dplyr,
+    ggplot2,
+    labdsv,
+    lme4,
+    lmerTest,
+    MASS,
+    nlme,
+    openxlsx,
+    parallel,
+    pbapply,
+    pscl,
+    ropls,
+    scales,
+    signal,
+    tsne
