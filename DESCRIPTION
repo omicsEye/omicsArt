@@ -23,6 +23,7 @@ Imports:
     cplm,
     diffusionMap,
     dplyr,
+    future,
     ggplot2,
     labdsv,
     lme4,
@@ -32,8 +33,10 @@ Imports:
     openxlsx,
     parallel,
     pbapply,
+    permute,
     pscl,
     ropls,
     scales,
+    seriation,
     signal,
     tsne
